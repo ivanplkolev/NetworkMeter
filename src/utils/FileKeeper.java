@@ -7,46 +7,19 @@ import java.util.zip.ZipOutputStream;
 public class FileKeeper {
 
     private static final String textPrefix = "Hello I am file with size- ";
-    //    private static final String outputFileName = "outputFile";
     private static final String outputZipFileName = "outZipFile.zip";
     public static final String outnputDir = "outnputDir";
 
 
-    public static enum FileSize {
-        MB_1(1),
-        MB_10(10);
-// MB_100(100);
-
-        int mBytes;
-
-        FileSize(int mBytes) {
-            this.mBytes = mBytes;
-        }
-
-        public int getMegaBytes() {
-            return mBytes;
-        }
-
-        public int getBytes() {
-            return mBytes * 1024 * 1024;
-        }
-
-        public String getFileName() {
-            return name() + ".txt";
-        }
-
-    }
-
-
-    public static void main(String... args) {
-
-
-        prepareEnviroment();
-
+//    public static void main(String... args) {
 //
-        getFile(FileSize.MB_10);
-        System.out.println("... Successfully completed");
-    }
+//
+//        prepareEnviroment();
+//
+////
+//        getFile(FileSize.MB_10);
+//        Logger.log("... Successfully completed");
+//    }
 
     static void prepareEnviroment() {
 
@@ -60,9 +33,7 @@ public class FileKeeper {
 
         //create the text files
         for (FileSize fileSize : FileSize.values()) {
-            createTextFile(
-                    fileSize,
-                    outnputDir);
+            createTextFile(fileSize, outnputDir);
         }
 
         //zips the 3 text files in 1 archive
@@ -77,8 +48,6 @@ public class FileKeeper {
         if (file.isDirectory()) {
             if (file.list().length == 0) {
                 file.delete();
-                System.out.println("Directory is deleted : "
-                        + file.getName());
             } else {
                 String files[] = file.list();
                 for (String temp : files) {
@@ -87,13 +56,10 @@ public class FileKeeper {
                 }
                 if (file.list().length == 0) {
                     file.delete();
-                    System.out.println("Directory is deleted : "
-                            + file.getAbsolutePath());
                 }
             }
         } else {
             file.delete();
-            System.out.println("File is deleted : " + file.getName());
         }
     }
 
@@ -108,20 +74,20 @@ public class FileKeeper {
                 w.write(textSource);
                 w.write("\n");
             } catch (FileNotFoundException e) {
-                System.out.println("Couldn't create " + fileSize.getFileName() + ".");
-                System.exit(0);
+                Logger.log("Couldn't create " + fileSize.getFileName() + ".");
+                System.exit(1);
             } catch (IOException xe) {
-                System.out.println("IO Exception " + fileSize.getFileName() + ".");
-                System.exit(0);
+                Logger.log("IO Exception " + fileSize.getFileName() + ".");
+                System.exit(1);
             }
         }
-        System.out.println("Created file " + fileSize.getFileName());
+        Logger.log("Created file " + fileSize.getFileName());
     }
 
     private static long zipAllFilesInDir(String dir, String archiveName, String destination) {
         long startZippingTime = System.currentTimeMillis();
-        try {
 
+        try {
             byte[] b;
             FileOutputStream fout = new FileOutputStream(new File(destination, archiveName));
             ZipOutputStream zout = new ZipOutputStream(new BufferedOutputStream(fout));
@@ -129,7 +95,7 @@ public class FileKeeper {
             File[] files = new File(dir).listFiles();
             for (int i = 0; i < files.length; i++) {
                 if (!files[i].getName().replaceAll("^.*\\.(.*)$", "$1").equals("txt")) {
-                    System.out.println("Skipped file " + files[i].getName());
+                    Logger.log("Skipped file " + files[i].getName());
                     continue;
                 }
                 b = new byte[1024];
@@ -141,16 +107,13 @@ public class FileKeeper {
                 }
                 zout.closeEntry();
                 fin.close();
-                System.out.println("Zipped file " + files[i].getName());
             }
             zout.close();
         } catch (IOException e) {
-            System.out.println("Exception in Zipping all files in dir " + e.getMessage());
+            Logger.log("Exception in Zipping all files in dir " + e.getMessage());
             System.exit(0);
         }
 
-
-        System.out.println("Created archive" + archiveName);
         return System.currentTimeMillis() - startZippingTime;
     }
 

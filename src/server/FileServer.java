@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
 public class FileServer extends Thread {
     public static final int PORT = 3332;
     public static final int BUFFER_SIZE = 100;
@@ -43,22 +42,14 @@ public class FileServer extends Thread {
         FileOutputStream fos = new FileOutputStream(tmpFile);
 
         do {
-
             bytesRead = (Integer) ois.readObject();
-
-
             buffer = (byte[]) ois.readObject();
             fos.write(buffer, 0, bytesRead);
         } while (bytesRead == BUFFER_SIZE);
 
-        System.out.println("File transfer success");
-
         fos.close();
-
         long totalTime = System.currentTimeMillis() - start;
         ois.close();
-
-
         oos.close();
 
         Logger.log("Time to download the file: " + totalTime);
@@ -66,9 +57,8 @@ public class FileServer extends Thread {
         tmpFile.delete();
     }
 
-    public static void main(String[] args) {
-        new FileServer().start();
+    public FileServer() {
+        setName("FileServerThread");
     }
-
 
 }

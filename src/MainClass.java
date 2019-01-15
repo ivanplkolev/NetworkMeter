@@ -1,9 +1,10 @@
 
 
-import client.Utility;
+import client.Client;
+import multicasting.DeviceScanner;
+import multicasting.HeartBeat;
 import server.FileServer;
 
-import java.net.InetAddress;
 import java.util.Scanner;
 
 public class MainClass {
@@ -11,56 +12,46 @@ public class MainClass {
 
     public static void main(String... args) throws Exception {
         new FileServer().start();
+        new HeartBeat(Client.getMyLocalAdderss()).start();
+        new DeviceScanner().start();
 
+        Thread.currentThread().setName("MainThread");
         startConcoleMenu();
     }
 
 
     static void startConcoleMenu() throws Exception {
-        System.out.println("Hello user, what do you want to do:");
-        System.out.println("Check network speed - 1");
-        System.out.println("Check network speed for specific Ip addr- 2");
-        System.out.println("Check open ports in ip - 3");
-        System.out.println("Find Ips in local network - 4");
-        System.out.println("Find my IP - 5");
-        System.out.println("Exit - 9");
+        System.out.println("Hello, what do you want to do:");
+        System.out.println("1) Check network speed ");
+        System.out.println("2) Check open ports on ip");
+        System.out.println("3) Find Ips in local network ");
+        System.out.println("4) Find my IP");
+        System.out.println("9) Exit");
         Scanner in = new Scanner(System.in);
 
         int res = in.nextInt();
 
         switch (res) {
             case 1:
-                Utility.checkNetworkSpeed();
+                Client.checkNetworkSpeed();
                 break;
             case 2:
-                checkNetworkSpeedForIP();
+                Client.scanIpAddress();
                 break;
             case 3:
-                Utility.scanIpAddress(null);
+                Client.findLocalIPs();
                 break;
             case 4:
-                Utility.findLocalIPs();
-                break;
-            case 5:
-                Utility.findMyIP();
+                Client.findMyIP();
                 break;
             case 9:
                 System.exit(0);
                 break;
             default:
-                System.out.println("Wrong input -----> Start again");
+                System.out.println("Wrong input -----> Start again...");
         }
-        startConcoleMenu();
-    }
-
-    public static void checkNetworkSpeedForIP() throws Exception {
-        System.out.println("Please enter the local IP");
-
-        Scanner in = new Scanner(System.in);
-        String res = in.nextLine().trim();
-
-        Utility.checkNetworkSpeed(InetAddress.getByName(res), FileServer.PORT);
-
+        System.exit(0);
+//        startConcoleMenu();
     }
 
 

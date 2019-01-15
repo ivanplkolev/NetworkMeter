@@ -1,5 +1,17 @@
-Check local Ip address
-check all available ips in the local network
-check all open ports on a given IP
-check speed to tranfer 1MB file, 10MB file and , the both files zipped in 1 archive
-FileKeeper creates files with specific size, zippes them and provides them when needed
+Съдържание на проекта:
+Main class-  клас с main  метод, основна отправна точка за стартиране на приложението,
+main метода стартира 3 нишки, това са 2 мултиксат нишки, и един файл сървър
+след това стартира потребителския интерфейс, който е конзолен
+
+client.Client - тук са няколко метода които се извикват директно от потребитексия интерфейс
+
+multicasting.HeartBeat - изпраща сигнал на всеки 2 секунди в обща мултикаст група
+да информира останалите приложения че могат да се обръщат към него
+multicasting.DeviceScanner - сканира за такива сигнали, и връща активните адреси от които е получил сигнал
+
+server.FileServer - файлов сървър, който при изпращане на файл го чете и записва на диска, после веднага го трие,
+също така измерва скоростта за достигане на файла
+
+utils.FileSize - enum за по лесна работа с файлове
+utils.FileKeeper - клас, който създава текстови дайлове по зададени размери, архивира ги и връща времето за архивиране
+utils.Logger - мой логер, който нагледно показва името на тред-а, името на класа и името на метода от който се логва
