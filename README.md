@@ -15,7 +15,9 @@ Hello, what do you want to do:
 1
 
 Please choose device to scan
+
 0   192.168.1.5 192.168.1.5
+
 1   192.168.1.3 x-PC
 
 0
@@ -37,7 +39,9 @@ Hello, what do you want to do:
 2
 
 In method scanIpAddress, please enter address:
+
 192.168.1.5
+
 There is a server on port 22 of 192.168.1.5
 
 Show the reachable IP addresses in the local network:
@@ -51,8 +55,11 @@ Hello, what do you want to do:
 3
 
 In method getMyLocalSubnet
+
 ralink.ralinktech.com is reachable (192.168.1.1)
+
 x-PC is reachable (192.168.1.3)
+
 192.168.1.5 is reachable (192.168.1.5)
 
 Display My IP Adress:
@@ -66,5 +73,7 @@ Hello, what do you want to do:
 4
 
 In method findMyIP
+
 IP: 192.168.1.3
+
 HostName: x-PC
