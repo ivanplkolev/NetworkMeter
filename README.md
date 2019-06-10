@@ -117,3 +117,8 @@ Hello, what do you want to do:
 In method findMyIP
 IP: 192.168.1.3
 HostName: x-PC
+
+
+To create JAR:
+cd src
+jar cfm ..\NetworkkMeter.jar ..\MANIFEST.MF MainClass.class server\*.class client\*.class multicasting\*.class utils\*.class
