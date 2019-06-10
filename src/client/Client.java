@@ -38,15 +38,15 @@ public class Client {
     private static void checkNetworkSpeed(InetAddress addrd, int port) throws Exception {
 
         float timeFor1MB = sendFile(FileKeeper.getFile(FileSize.MB_1), addrd, port) / 1000f;
-        System.out.println("End results Time for transfer 1MB= " + timeFor1MB + "s which means " + (1 / timeFor1MB) + "MB/s.");
+        System.out.println("Time for transfer 1MB= " + timeFor1MB + "s which means " + (1 / timeFor1MB) + "MB/s.");
 
         float timeFor10MB = sendFile(FileKeeper.getFile(FileSize.MB_10), addrd, port) / 1000f;
-        System.out.println("End results Time for transfer 10MB= " + timeFor10MB + " which means " + (1 / timeFor10MB) + "MB/s.");
+        System.out.println("Time for transfer 10MB= " + timeFor10MB + " which means " + (1 / timeFor10MB) + "MB/s.");
 
         float timeForZipped = sendFile(FileKeeper.getZippedFile(), addrd, port) / 1000f;
         float zippingTime = FileKeeper.getTimeForZipping() / 1000f;
 
-        System.out.println("End results Time for transfer zipped " + timeForZipped + "s +  " + zippingTime + "s time for zipping");
+        System.out.println("Time for transfer zipped " + timeForZipped + "s +  " + zippingTime + "s time for zipping");
         System.out.println("Total Time for unzipped 11MB= " + (timeFor1MB + timeFor10MB) +
                 "s time for zipping and sending" + (timeForZipped + zippingTime) + "s.");
     }
