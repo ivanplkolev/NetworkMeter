@@ -121,4 +121,11 @@ HostName: x-PC
 
 To create JAR:
 cd src
-jar cfm ..\NetworkkMeter.jar ..\MANIFEST.MF MainClass.class server\*.class client\*.class multicasting\*.class utils\*.class
+javac MainClass.java
+jar cfm ..\NetworkMeter.jar ..\MANIFEST.MF MainClass.class server\*.class client\*.class multicasting\*.class utils\*.class
+
+To Run it:
+java -jar NetworkMeter.jar
+
+Download Link:
+https://raw.githubusercontent.com/ivanplkolev/NetworkMeter/master/NetworkMeter.jar
