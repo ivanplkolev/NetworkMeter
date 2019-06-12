@@ -129,3 +129,6 @@ java -jar NetworkMeter.jar
 
 Download Link:
 https://raw.githubusercontent.com/ivanplkolev/NetworkMeter/master/NetworkMeter.jar
+
+sudo yum install java-1.8.0
+wget https://raw.githubusercontent.com/ivanplkolev/NetworkMeter/master/NetworkMeter.jar
