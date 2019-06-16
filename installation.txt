@@ -282,7 +282,7 @@ ssh -i "IvanProject01.pem" ec2-user@ec2-3-95-161-231.compute-1.amazonaws.com
  MainThread : MainClass : main : Created file MB_10.txt
  MainThread : MainClass : main : Skipped file outZipFile.zip
  Time for transfer 1MB= 0.159s which means 6.2893085MB/s.
- Time for transfer 10MB= 0.924 which means 1.0822511MB/s.
+ Time for transfer 10MB= 0.924 which means 10.822511MB/s.
  MainThread : MainClass : main : Skipped file outZipFile.zip
  Time for transfer zipped 0.002s +  0.153s time for zipping
  Total Time for unzipped 11MB= 1.0830001s time for zipping and sending0.155s.
@@ -327,6 +327,33 @@ Time for transfer zipped 1.091s +  0.177s time for zipping
 Total Time for unzipped 11MB = 85.812996s time for zipping and sending1.268s.
 MainThread : MainClass : main : Removing objects from bucket
 MainThread : MainClass : main : Bucket fminetworkmeter662 successfully deleted
+
+
+[ec2-user@ip-172-31-90-85 ~]$ java -jar NetworkMeter.jar
+Hello, what do you want to do:
+1) Check network speed
+2) Check open ports on ip
+3) Find Ips in local network
+4) Find my IP
+5) Check network speed to specific IP
+6) Check network speed to S3 Bucket
+9) Exit
+6
+Please enter Bucket Name, or press Enter to create automatically
+
+MainThread : MainClass : main : Bucket fminetworkmeter437 successfully cretaed
+MainThread : MainClass : main : Created file MB_1.txt
+MainThread : MainClass : main : Created file MB_10.txt
+MainThread : MainClass : main : Skipped file outZipFile.zip
+Time for transfer 1MB = 0.34s which means 2.9411764 MB/s.
+Time for transfer 10MB = 0.393s which means 25.445292 MB/s.
+MainThread : MainClass : main : Skipped file outZipFile.zip
+Time for transfer zipped 0.126s +  0.104s time for zipping
+Total Time for unzipped 11MB = 0.73300004s time for zipping and sending0.23s.
+MainThread : MainClass : main : Removing objects from bucket
+MainThread : MainClass : main : Bucket fminetworkmeter437 successfully deleted
+
+
 
 
 
