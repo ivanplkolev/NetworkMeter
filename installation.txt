@@ -1,0 +1,336 @@
+C:\Users\x>aws ec2 create-key-pair --key-name IvanProject01
+
+C:\Users\x>aws ec2 create-security-group --group-name network-meter-sg --description "Network Meterer SG"
+{
+    "GroupId": "sg-0c6332558a7fffdb0"
+}
+
+C:\Users\x>aws ec2 describe-security-groups --group-ids sg-0c6332558a7fffdb0
+{
+    "SecurityGroups": [
+        {
+            "Description": "Network Meterer SG",
+            "GroupName": "network-meter-sg",
+            "IpPermissions": [],
+            "OwnerId": "438590637068",
+            "GroupId": "sg-0c6332558a7fffdb0",
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "VpcId": "vpc-6e850f14"
+        }
+    ]
+}
+
+
+C:\Users\x>aws ec2 authorize-security-group-ingress --group-id sg-0c6332558a7fffdb0
+db0 --protocol tcp --port 3332 --cidr 0.0.0.0/0
+
+C:\Users\x>aws ec2 authorize-security-group-ingress --group-id sg-0c6332558a7fffdb0
+db0 --protocol tcp --port 22 --cidr 0.0.0.0/0
+
+C:\Users\x>aws ec2 run-instances --image-id ami-0c6b1d09930fac512 --count 1 --instance-type t2.micro  --key-name IvanProject01 --security-group-ids sg-0c6332558a7fffdb0
+{
+    "Groups": [],
+    "Instances": [
+        {
+            "AmiLaunchIndex": 0,
+            "ImageId": "ami-0c6b1d09930fac512",
+            "InstanceId": "i-0b412799acbdb419d",
+            "InstanceType": "t2.micro",
+            "KeyName": "IvanProject01",
+            "LaunchTime": "2019-06-16T16:08:43.000Z",
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "Placement": {
+                "AvailabilityZone": "us-east-1a",
+                "GroupName": "",
+                "Tenancy": "default"
+            },
+            "PrivateDnsName": "ip-172-31-90-85.ec2.internal",
+            "PrivateIpAddress": "172.31.90.85",
+            "ProductCodes": [],
+            "PublicDnsName": "",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "StateTransitionReason": "",
+            "SubnetId": "subnet-ecb5f0c2",
+            "VpcId": "vpc-6e850f14",
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [],
+            "ClientToken": "",
+            "EbsOptimized": false,
+            "Hypervisor": "xen",
+            "NetworkInterfaces": [
+                {
+                    "Attachment": {
+                        "AttachTime": "2019-06-16T16:08:43.000Z",
+                        "AttachmentId": "eni-attach-09a9fa5d46e3705f2",
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": 0,
+                        "Status": "attaching"
+                    },
+                    "Description": "",
+                    "Groups": [
+                        {
+                            "GroupName": "network-meter-sg",
+                            "GroupId": "sg-0c6332558a7fffdb0"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "MacAddress": "12:f2:20:9b:1f:6c",
+                    "NetworkInterfaceId": "eni-0e04f9dfb3f497af2",
+                    "OwnerId": "438590637068",
+                    "PrivateDnsName": "ip-172-31-90-85.ec2.internal",
+                    "PrivateIpAddress": "172.31.90.85",
+                    "PrivateIpAddresses": [
+                        {
+                            "Primary": true,
+                            "PrivateDnsName": "ip-172-31-90-85.ec2.internal",
+                            "PrivateIpAddress": "172.31.90.85"
+                        }
+                    ],
+                    "SourceDestCheck": true,
+                    "Status": "in-use",
+                    "SubnetId": "subnet-ecb5f0c2",
+                    "VpcId": "vpc-6e850f14"
+                }
+            ],
+            "RootDeviceName": "/dev/xvda",
+            "RootDeviceType": "ebs",
+            "SecurityGroups": [
+                {
+                    "GroupName": "network-meter-sg",
+                    "GroupId": "sg-0c6332558a7fffdb0"
+                }
+            ],
+            "SourceDestCheck": true,
+            "StateReason": {
+                "Code": "pending",
+                "Message": "pending"
+            },
+            "VirtualizationType": "hvm",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            }
+        }
+    ],
+    "OwnerId": "438590637068",
+    "ReservationId": "r-05e9a3435fc87e1ad"
+}
+
+C:\Users\x>aws ec2 describe-instances --query "Reservations[*].Instances[*].Publ
+icDnsName" --output=text
+ec2-3-85-164-207.compute-1.amazonaws.com
+
+ssh -i "IvanProject01.pem" ec2-user@ec2-3-85-164-207.compute-1.amazonaws.com
+
+sudo yum install java-1.8.0
+......
+
+wget https://raw.githubusercontent.com/ivanplkolev/NetworkMeter/master/NetworkMeter.jar
+
+exit
+
+C:\Users\x>aws ec2 create-image --instance-id i-0b412799acbdb419d --name "Networ
+kMonitor" --description "Java & My Network Monitor Installed"
+{
+    "ImageId": "ami-006fe5dbe23f41140"
+}
+
+C:\Users\x>aws ec2 run-instances --image-id ami-006fe5dbe23f41140 --count 1 --instance-type t2.micro  --key-name IvanProject01 --security-group-ids sg-0c6332558a7fffdb0
+{
+    "Groups": [],
+    "Instances": [
+        {
+            "AmiLaunchIndex": 0,
+            "ImageId": "ami-006fe5dbe23f41140",
+            "InstanceId": "i-0e87c1940152b1da1",
+            "InstanceType": "t2.micro",
+            "KeyName": "IvanProject01",
+            "LaunchTime": "2019-06-16T16:31:14.000Z",
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "Placement": {
+                "AvailabilityZone": "us-east-1a",
+                "GroupName": "",
+                "Tenancy": "default"
+            },
+            "PrivateDnsName": "ip-172-31-86-80.ec2.internal",
+            "PrivateIpAddress": "172.31.86.80",
+            "ProductCodes": [],
+            "PublicDnsName": "",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "StateTransitionReason": "",
+            "SubnetId": "subnet-ecb5f0c2",
+            "VpcId": "vpc-6e850f14",
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [],
+            "ClientToken": "",
+            "EbsOptimized": false,
+            "Hypervisor": "xen",
+            "NetworkInterfaces": [
+                {
+                    "Attachment": {
+                        "AttachTime": "2019-06-16T16:31:14.000Z",
+                        "AttachmentId": "eni-attach-0ab0643dd05d9000c",
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": 0,
+                        "Status": "attaching"
+                    },
+                    "Description": "",
+                    "Groups": [
+                        {
+                            "GroupName": "network-meter-sg",
+                            "GroupId": "sg-0c6332558a7fffdb0"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "MacAddress": "12:5b:0d:4c:98:c2",
+                    "NetworkInterfaceId": "eni-0e3dd78199a45a7ca",
+                    "OwnerId": "438590637068",
+                    "PrivateDnsName": "ip-172-31-86-80.ec2.internal",
+                    "PrivateIpAddress": "172.31.86.80",
+                    "PrivateIpAddresses": [
+                        {
+                            "Primary": true,
+                            "PrivateDnsName": "ip-172-31-86-80.ec2.internal",
+                            "PrivateIpAddress": "172.31.86.80"
+                        }
+                    ],
+                    "SourceDestCheck": true,
+                    "Status": "in-use",
+                    "SubnetId": "subnet-ecb5f0c2",
+                    "VpcId": "vpc-6e850f14"
+                }
+            ],
+            "RootDeviceName": "/dev/xvda",
+            "RootDeviceType": "ebs",
+            "SecurityGroups": [
+                {
+                    "GroupName": "network-meter-sg",
+                    "GroupId": "sg-0c6332558a7fffdb0"
+                }
+            ],
+            "SourceDestCheck": true,
+            "StateReason": {
+                "Code": "pending",
+                "Message": "pending"
+            },
+            "VirtualizationType": "hvm",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            }
+        }
+    ],
+    "OwnerId": "438590637068",
+    "ReservationId": "r-0d1df57dab59f7f91"
+}
+
+
+C:\Users\x>aws ec2 describe-instances --query "Reservations[*].Instances[*].Publ
+icDnsName" --output=text
+ec2-3-85-164-207.compute-1.amazonaws.com
+ec2-3-95-161-231.compute-1.amazonaws.com
+
+
+# Run the EC2 instances in differente terminals
+
+ssh -i "IvanProject01.pem" ec2-user@ec2-3-85-164-207.compute-1.amazonaws.com
+ssh -i "IvanProject01.pem" ec2-user@ec2-3-95-161-231.compute-1.amazonaws.com
+
+# Run the NetworkMeter.jar  java -jar NetworkMeter.jar
+
+ [ec2-user@ip-172-31-86-80 ~]$ java -jar NetworkMeter.jar
+ Hello, what do you want to do:
+ 1) Check network speed
+ 2) Check open ports on ip
+ 3) Find Ips in local network
+ 4) Find my IP
+ 5) Check network speed to specific IP
+ 6) Check network speed to S3 Bucket
+ 9) Exit
+ 5
+ Please enter IP
+ ec2-3-85-164-207.compute-1.amazonaws.com
+ MainThread : MainClass : main : Created file MB_1.txt
+ MainThread : MainClass : main : Created file MB_10.txt
+ MainThread : MainClass : main : Skipped file outZipFile.zip
+ Time for transfer 1MB= 0.159s which means 6.2893085MB/s.
+ Time for transfer 10MB= 0.924 which means 1.0822511MB/s.
+ MainThread : MainClass : main : Skipped file outZipFile.zip
+ Time for transfer zipped 0.002s +  0.153s time for zipping
+ Total Time for unzipped 11MB= 1.0830001s time for zipping and sending0.155s.
+
+ # Repeat the same procedure from local machine
+ Hello, what do you want to do:
+ 1) Check network speed
+ 2) Check open ports on ip
+ 3) Find Ips in local network
+ 4) Find my IP
+ 5) Check network speed to specific IP
+ 6) Check network speed to S3 Bucket
+ 9) Exit
+ 5
+ Please enter IP
+ ec2-3-85-164-207.compute-1.amazonaws.com
+ Time for transfer 1MB= 16.994s which means 0.058844298MB/s.
+ Time for transfer 10MB= 168.223 which means 0.0594449MB/s.
+ MainThread : MainClass : main : Skipped file outZipFile.zip
+ Time for transfer zipped 0.571s +  0.186s time for zipping
+ Total Time for unzipped 11MB= 185.21701s time for zipping and sending0.75699997s.
+
+
+$ scp -i "IvanProject01.pem" C:/Users/x/.aws/credentials ec2-user@ec2-3-95-161-231.compute-1.amazonaws.com:/.aws
+
+Hello, what do you want to do:
+1) Check network speed
+2) Check open ports on ip
+3) Find Ips in local network
+4) Find my IP
+5) Check network speed to specific IP
+6) Check network speed to S3 Bucket
+9) Exit
+6
+Please enter Bucket Name, or press Enter to create automatically.
+
+MainThread : MainClass : main : Bucket fminetworkmeter662 successfully cretaed
+Time for transfer 1MB = 8.602s which means 0.116252035 MB/s.
+Time for transfer 10MB = 77.211s which means 0.12951523 MB/s.
+MainThread : MainClass : main : Skipped file outZipFile.zip
+Time for transfer zipped 1.091s +  0.177s time for zipping
+Total Time for unzipped 11MB = 85.812996s time for zipping and sending1.268s.
+MainThread : MainClass : main : Removing objects from bucket
+MainThread : MainClass : main : Bucket fminetworkmeter662 successfully deleted
+
+
+
+
+
+
+

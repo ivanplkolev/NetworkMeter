@@ -1,6 +1,7 @@
 package client;
 
 import aws.BucketManager;
+import com.amazonaws.util.StringUtils;
 import multicasting.DeviceScanner;
 import server.FileServer;
 import utils.FileKeeper;
@@ -52,7 +53,7 @@ public class Client {
         System.out.println("Time for transfer 1MB= " + timeFor1MB + "s which means " + (1 / timeFor1MB) + "MB/s.");
 
         float timeFor10MB = sendFile(FileKeeper.getFile(FileSize.MB_10), addrd, port) / 1000f;
-        System.out.println("Time for transfer 10MB= " + timeFor10MB + " which means " + (1 / timeFor10MB) + "MB/s.");
+        System.out.println("Time for transfer 10MB= " + timeFor10MB + " which means " + (10 / timeFor10MB) + "MB/s.");
 
         float timeForZipped = sendFile(FileKeeper.getZippedFile(), addrd, port) / 1000f;
         float zippingTime = FileKeeper.getTimeForZipping() / 1000f;
@@ -141,17 +142,22 @@ public class Client {
 
 
     public static void uploadToS3Bucket() {
-        System.out.println("Please enter Bucket Name");
+        System.out.println("Please enter Bucket Name, or press Enter to create automatically");
 
         Scanner in = new Scanner(System.in);
         String bucketName = in.nextLine().trim();
 
+        boolean createdHere = false;
+        if(StringUtils.isNullOrEmpty(bucketName)){
+            createdHere = true;
+            bucketName = BucketManager.createBucket();
+        }
 
         float timeFor1MB = BucketManager.uploadFileToBucket(bucketName, FileKeeper.getFile(FileSize.MB_1)) / 1000f;
         System.out.println("Time for transfer 1MB = " + timeFor1MB + "s which means " + (1 / timeFor1MB) + " MB/s.");
 
         float timeFor10MB = BucketManager.uploadFileToBucket(bucketName, FileKeeper.getFile(FileSize.MB_10)) / 1000f;
-        System.out.println("Time for transfer 10MB = " + timeFor10MB + "s which means " + (1 / timeFor10MB) + " MB/s.");
+        System.out.println("Time for transfer 10MB = " + timeFor10MB + "s which means " + (10 / timeFor10MB) + " MB/s.");
 
         float timeForZipped = BucketManager.uploadFileToBucket(bucketName, FileKeeper.getZippedFile()) / 1000f;
         float zippingTime = FileKeeper.getTimeForZipping() / 1000f;
@@ -160,6 +166,9 @@ public class Client {
         System.out.println("Total Time for unzipped 11MB = " + (timeFor1MB + timeFor10MB) +
                 "s time for zipping and sending" + (timeForZipped + zippingTime) + "s.");
 
+        if(createdHere) {
+            BucketManager.deleteBucket(bucketName);
+        }
     }
 
 
