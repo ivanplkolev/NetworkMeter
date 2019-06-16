@@ -25,22 +25,22 @@ public class BucketManager {
 
     public static String createBucket() {
 
-        AmazonS3 s3client = AmazonS3ClientBuilder
-                .standard()
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(DEFAULT_REGION)
+                .withCredentials(new ProfileCredentialsProvider())
                 .build();
 
         String bucketName = BUCKET_DEF_PREFIX + new Random().nextInt(1000);
 
-        if (s3client.doesBucketExistV2(bucketName)) {
+        if (s3Client.doesBucketExistV2(bucketName)) {
             Logger.log("Bucket name is not available.");
             System.exit(0);
         }
 
-        s3client.createBucket(bucketName);
+        s3Client.createBucket(bucketName);
         Logger.log("Bucket " + bucketName + " successfully cretaed");
 
-        List<Bucket> buckets = s3client.listBuckets();
+        List<Bucket> buckets = s3Client.listBuckets();
 //        for (Bucket bucket : buckets) {
 //            Logger.log(bucket.getName());
 //        }
@@ -50,9 +50,9 @@ public class BucketManager {
     }
 
     public static void deleteBucket(String bucketName) {
-        AmazonS3 s3Client = AmazonS3ClientBuilder
-                .standard()
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(DEFAULT_REGION)
+                .withCredentials(new ProfileCredentialsProvider())
                 .build();
 
         try {
